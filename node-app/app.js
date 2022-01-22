@@ -7,6 +7,7 @@ var helmet = require('helmet')
 
 
 var indexRouter = require('./routes/index');
+var blogPost = require('./routes/BlogPostRoutes');
 var usersRouter = require('./routes/UserRoutes');
 var db = require('./config/db');
 
@@ -21,6 +22,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/blog', blogPost);
 app.use('/users', usersRouter);
 
 module.exports = app;

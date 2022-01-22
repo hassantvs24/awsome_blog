@@ -8,8 +8,8 @@ var BlogPostSchema = new Schema({
 	 	type: Schema.Types.ObjectId,
 	 	ref: 'UserModel'
 	},
-	'created_at' : Date,
-	'updated_at' : Date
+	'created_at' : { type: Date, default: Date.now },
+	'updated_at' : { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('BlogPost', BlogPostSchema);
