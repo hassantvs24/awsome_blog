@@ -54,12 +54,19 @@ module.exports = {
      * UserController.create()
      */
     create: async function (req, res) {
+        const {name, email, password} = req.body;
         //Encrypt user password
-    let encryptedPassword = await bcrypt.hash(req.body.password, 10);
+        let encryptedPassword = await bcrypt.hash(password, 10);
+
+        const oldUser = await UserModel.findOne({ email });
+
+        if (oldUser) {
+          return res.status(409).send("User Already Exist. Please Login");
+        }
 
         var User = new UserModel({
-			name : req.body.name,
-			email : req.body.email.toLowerCase(),
+			name : name,
+			email : email.toLowerCase(),
 			password : encryptedPassword
         });
 
@@ -70,19 +77,8 @@ module.exports = {
                     error: err
                 });
             }
-
-                // Create token
-                let email =  User.email;
-                const token = jwt.sign({ user_id: User._id, email }, process.env.TOKEN_KEY, {expiresIn: "2h"});
-                
-
-                // save user token
-                User.token = token;
-
             return res.status(201).json(User);
         });
-
-     
         
     },
 

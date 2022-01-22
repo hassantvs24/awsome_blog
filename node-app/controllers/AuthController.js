@@ -1,7 +1,6 @@
 require('dotenv').config();
 var UserModel = require('../models/UserModel.js');
 var bcrypt = require('bcryptjs');
-var jwt = require('jsonwebtoken');
 
 /**
  * UserController.js
@@ -11,34 +10,26 @@ var jwt = require('jsonwebtoken');
 module.exports = {
 
     register: async function (req, res) {
+        const {name, email, password} = req.body;
         //Encrypt user password
-    let encryptedPassword = await bcrypt.hash(req.body.password, 10);
+        let encryptedPassword = await bcrypt.hash(password, 10);
+
+        const oldUser = await UserModel.findOne({ email });
+
+        if (oldUser) {
+          return res.status(409).send("User Already Exist");
+        }
 
         var User = new UserModel({
-			name : req.body.name,
-			email : req.body.email.toLowerCase(),
-			password : encryptedPassword
+          name : name,
+          email : email.toLowerCase(),
+          password : encryptedPassword
         });
 
-        await User.save(async function (err, User) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when creating User',
-                    error: err
-                });
-            }
+        let user = await User.save();
+        const token = user.generateAuthToken();
 
-                // Create token
-                let email =  User.email;
-                const tokens = jwt.sign({ user_id: User._id, email }, process.env.TOKEN_KEY, {expiresIn: "2h"});
-                
-                //save token
-               User.token = tokens;
-               //UserModel.findByIdAndUpdate(User._id, { token: User.token })
-
-
-            return res.status(201).json(User);
-        });
+        return res.status(201).json({user_id: user._id, name: user.name, email: user.email, token: token});
     },
 
     login: async function (req, res) {
@@ -56,17 +47,8 @@ module.exports = {
         
             if (user && (await bcrypt.compare(password, user.password))) {
               // Create token
-              const token = jwt.sign(
-                { user_id: user._id, email },
-                process.env.TOKEN_KEY,
-                {
-                  expiresIn: "2h",
-                }
-              );
-        
-              // save user token
+              const token = user.generateAuthToken();
               user.token = token;
-        
               // user
               res.status(200).json(user);
             }
@@ -75,4 +57,6 @@ module.exports = {
             console.log(err);
           }
     }
+
+
 };
