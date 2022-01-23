@@ -1,3 +1,5 @@
 
 node-app/node_modules/*
 node-app/.env
+reacts-app/node_modules/*
+reacts-app/.gitignore
