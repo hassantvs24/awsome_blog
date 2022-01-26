@@ -2,9 +2,20 @@ import React from 'react';
 import logo from './logo.svg';
 import { Counter } from './features/counter/Counter';
 import './App.css';
+import Footer from './include/footer';
+import Nav from './include/nav';
+import Header from './include/header';
+import Content from './content';
 
 function App() {
   return (
+    <>
+      <Nav />
+      <Header />
+      <Content />
+      <Footer />
+    </>
+/*
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
@@ -51,7 +62,7 @@ function App() {
           </a>
         </span>
       </header>
-    </div>
+    </div>*/
   );
 }
 
