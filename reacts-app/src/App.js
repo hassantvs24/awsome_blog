@@ -2,18 +2,19 @@ import React from 'react';
 import logo from './logo.svg';
 import { Counter } from './features/counter/Counter';
 import './App.css';
-import Footer from './include/footer';
-import Nav from './include/nav';
-import Header from './include/header';
-import Content from './content';
+import { Routes, Route, Link } from "react-router-dom";
+import Home from './pages/home';
+import Blog from './pages/blog';
+import Post from './pages/post';
 
 function App() {
   return (
     <>
-      <Nav />
-      <Header />
-      <Content />
-      <Footer />
+      <Routes>
+        <Route path="/" element={<Home title="Awesome Blog" />} />
+        <Route path="/post" element={<Post title="Create New Post" />} />
+        <Route path="/blog" element={<Blog  title="View Single Post" />} />
+      </Routes>
     </>
 /*
     <div className="App">
