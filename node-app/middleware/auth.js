@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const config = process.env;
 
 const verifyToken = (req, res, next) => {
-  const tokenSend = req.headers['authorization'];
+  const tokenSend = req.headers['x-auth-token'];
 
   if (!tokenSend) {
     return res.status(403).send("A token is required for authentication");
