@@ -55,8 +55,9 @@ module.exports = {
      */
     create: async function (req, res) {
         const {name, email, password} = req.body;
+        const newLocal = 10;
         //Encrypt user password
-        let encryptedPassword = await bcrypt.hash(password, 10);
+        let encryptedPassword = await bcrypt.hash(password, newLocal);
 
         const oldUser = await UserModel.findOne({ email });
 
@@ -88,7 +89,8 @@ module.exports = {
      */
     update: async function (req, res) {
         var id = req.params.id;
-        let encryptedPassword = await bcrypt.hash(req.body.password, 10);
+        const newLocal = 10;
+        let encryptedPassword = await bcrypt.hash(req.body.password, newLocal);
 
         await UserModel.findOne({_id: id}, function (err, User) {
             if (err) {

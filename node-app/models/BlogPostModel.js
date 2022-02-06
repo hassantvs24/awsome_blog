@@ -5,8 +5,12 @@ var BlogPostSchema = new Schema({
 	'title' : String,
 	'content' : String,
 	'author' : {
-	 	type: Schema.Types.ObjectId,
-	 	ref: 'UserModel'
+		'_id': {
+			type: Schema.Types.ObjectId,
+			ref: 'UserModel'
+		},
+		'name': String,
+		'email': String
 	},
 	'created_at' : { type: Date, default: Date.now },
 	'updated_at' : { type: Date, default: Date.now }

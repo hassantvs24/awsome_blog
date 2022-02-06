@@ -51,10 +51,11 @@ module.exports = {
      * BlogPostController.create()
      */
     create: function (req, res) {
+        const {user_id, name, email} = req.user;
         var BlogPost = new BlogpostModel({
 			title : req.body.title,
 			content : req.body.content,
-			author : req.body.author,
+			author : {_id: user_id, name, email},
 			created_at : req.body.created_at,
 			updated_at : req.body.updated_at
         });
@@ -93,7 +94,7 @@ module.exports = {
 
             BlogPost.title = req.body.title ? req.body.title : BlogPost.title;
 			BlogPost.content = req.body.content ? req.body.content : BlogPost.content;
-			BlogPost.author = req.body.author ? req.body.author : BlogPost.author;
+			//BlogPost.author = req.body.author ? req.body.author : BlogPost.author;
 			BlogPost.created_at = req.body.created_at ? req.body.created_at : BlogPost.created_at;
 			BlogPost.updated_at = req.body.updated_at ? req.body.updated_at : BlogPost.updated_at;
 			

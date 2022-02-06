@@ -40,7 +40,7 @@ module.exports = {
         
             // Validate user input
             if (!(email && password)) {
-              res.status(400).send("All input is required");
+              return res.status(400).send("All input is required");
             }
             // Validate if user exist in our database
             const user = await UserModel.findOne({ email });
@@ -50,11 +50,11 @@ module.exports = {
               const token = user.generateAuthToken();
               user.token = token;
               // user
-              res.status(200).json(user);
+              return res.status(200).json(user);
             }
-            res.status(400).send("Invalid Credentials");
+            return res.status(400).send("Invalid Credentials");
           } catch (err) {
-            console.log(err);
+            return res.status(500).send("Invalid Login");
           }
     }
 
